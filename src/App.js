@@ -6,8 +6,6 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>StateChange</h1>
-  
       </header>
       <ChangesState />
     </div>

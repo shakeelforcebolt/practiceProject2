@@ -1,44 +1,106 @@
 import React, {Component} from 'react';
 import Email from './State/Email';
 import Sms from './State/Sms';
+import EmailData from './State/emailData';
+import SmsData from './State/smsData';
+import { logDOM } from '@testing-library/dom';
 
 class State extends Component {
 
     state = {
-        states : [
-            { name:"Shaleel", age:25 },
-            { name : "Ahmad", age:27 }
+        emailState : [
+            { email:"---", amount:0 }
         ],
-        otherValue:"Some Other Value!",
-        showPerson: false
+        smsState:[
+            { sms: "---", amount:0}
+       ],
+        showPerson: true,
+        showData: false
     }
      
 
-    nameChangeHandler = (event) => {
+    emailChangedHandler = (event) => {
          this.setState( {
-            states : [
-                { name:"Shaleel", age:25 },
-                { name : event.target.value, age:27 }
+            emailState : [
+                { email: event.target.value, amount:this.state.emailState[0].amount },
             ]
          })
     }
+    emailAmountChangedHandler = (event) => {
+        this.setState( {
+           emailState : [
+               { email: this.state.emailState[0].email , amount:event.target.value },
+           ]
+        })
+   }
+    smsChangedHandler = (event) => {
+        this.setState( {
+           smsState : [
+               { sms:event.target.value, amount:this.state.smsState[0].amount },
+           ]
+        })
+   }
+   smsAmountChangedHandler = (event) => {
+    this.setState( {
+       smsState : [
+           { sms: this.state.smsState[0].sms  , amount: event.target.value },
+       ]
+    })
+}
 
     togglePersonHandler = () => {
         const doesSHow  = this.state.showPerson;
         this.setState({showPerson: !doesSHow});
 
     }
+    toggleDataHandler = () => {
+        const doesSHow  = this.state.showData;
+        this.setState({showData: !doesSHow});
+
+    }
     render () {
+        let data=null;
+
+        if(this.state.showData){
+            if(this.state.showPerson){
+                data = (
+                    <div>
+                    {this.state.emailState.map( person =>{
+                        return (
+                            <EmailData
+                            name = {person.email}
+                            age = {person.amount} />
+                        )
+                    })}
+                 </div>
+                   );
+            }else{
+                data = (
+                <div>
+                {this.state.smsState.map( person =>{
+                    return (
+                        <SmsData
+                        name = {person.sms}
+                        age = {person.amount} />
+                    )
+                })}
+             </div>
+                )
+               }
+            
+        }
        let persons = null;
 
        if(this.state.showPerson){
            persons = (
             <div>
-            {this.state.states.map( person =>{
+            {this.state.emailState.map( person =>{
                 return (
                     <Email
-                    name = {person.name}
-                    age = {person.age} />
+                    name = {person.email}
+                    age = {person.amount}
+                    changed = {this.emailChangedHandler}
+                    changed2 = {this.emailAmountChangedHandler} />
                 )
             })}
 
@@ -48,11 +110,14 @@ class State extends Component {
        }else{
         persons = (
         <div>
-        {this.state.states.map( person =>{
+        {this.state.smsState.map( person =>{
+            console.log(person);
             return (
                 <Sms
-                name = {person.name}
-                age = {person.age} />
+                name = {person.sms}
+                age = {person.amount}
+                changed = {this.smsChangedHandler}
+                changed2 = {this.smsAmountChangedHandler} />
             )
         })}
      </div>
@@ -62,10 +127,17 @@ class State extends Component {
 
         return(
             <div>
-                <h1>ChangesStates Call</h1>
-                <p>This is Simple State Change!</p>
-                <button className="btn btn-warning" onClick={this.togglePersonHandler}>Radio Button</button>
+                <h1 className = "mb-4">STATE CHANGE TOGGLE</h1>
+                {
+                    this.state.showPerson ?
+                    <div>
+                         <button className="btn btn-warning" onClick={this.togglePersonHandler}>Email</button>
+                    </div>:<button className="btn btn-warning" onClick={this.togglePersonHandler}>Sms</button>
+                }
             {persons}
+        
+            <button className="btn btn-warning mt-3" onClick={this.toggleDataHandler}>Data</button>
+            {data}
             </div>
         )
     }
