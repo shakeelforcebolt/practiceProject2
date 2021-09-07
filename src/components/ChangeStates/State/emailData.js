@@ -1,21 +1,18 @@
 
 import React from 'react';
 
+
 const person= (props)=>{
     console.log("[Person.ja] rendering...",props);
     return (
         <div>
-            <h3>Email ChnageState Call</h3>
-            <p>Enter Email</p> 
-            <input type="text" onChange={props.changed} />
-            <p>Enter Amount</p> 
-            <input type="text" onChange={props.changed2} />
             
             <div className = "container w-25 mt-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Email Preview</h5>
-                        <p class="card-text" > {props.name} has requested {props.age} $.</p>
+                        <h5 class="card-title">Entered Email Data</h5>
+                        <p class="card-text" onClick={props.click} > {props.name} has requested {props.age} $.</p>
+                        <a href="/" class="btn btn-primary">Submit</a>
                     </div>
                 </div>
             </div>
