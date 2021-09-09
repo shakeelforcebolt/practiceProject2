@@ -1,19 +1,31 @@
+import React, { useEffect } from "react";
+import { GET_USER } from "../graphql/queries/user";
+import client from "../store/client";
 
 type GreetProps = {
-    name : string
-}
+  name: string;
+};
 
+const Greet = (props: GreetProps) => {
+  useEffect(() => {
+    try {
+      getUser();
+    } catch (e) {}
+  }, []);
+  const getUser = async () => {
+    const { data } = await client.request({
+      query: GET_USER,
+    });
+    console.log("data", data);
+  };
+  return (
+    /*const [updateUser] = useMutation(UPDATE_USER_MUTATION)
+        const [newName, setNewName] = useState(id)*/
 
-const greet = (props : GreetProps) => {
-    return (
-        <div>
-            <h1>Greet Heading!!!!!</h1>
-            <h1>Greet Heading!!!!!</h1>
-            <h1>Greet Heading!!!!!</h1>
-            <h1>In Props Name Call: {props.name}</h1>
+    <div>
+      
+    </div>
+  );
+};
 
-        </div>
-    )
-}
-
-export default greet;
+export default Greet;
